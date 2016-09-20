@@ -1,0 +1,16 @@
+[
+{
+  "modid": "swift",
+  "name": "Swift",
+  "description": "Automatically fine-tunes your experience for the best possible settings at an ideal framerate",
+  "version": "0.1",
+  "mcversion": "1.7.10",
+  "url": "https://bit.ly/cmdownload",
+  "updateUrl": "",
+  "authorList": ["warlordjones", "Paint_Ninja"],
+  "credits": "Made by the epic warlordjones. Branding and original idea by Paint_Ninja.",
+  "logoFile": "assets/swift/logo.png",
+  "screenshots": [],
+  "dependencies": []
+}
+]
