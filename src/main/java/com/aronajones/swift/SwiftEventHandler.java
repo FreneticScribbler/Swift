@@ -1,6 +1,5 @@
 package com.aronajones.swift;
 
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import net.minecraft.client.Minecraft;
@@ -10,11 +9,15 @@ import net.minecraft.util.ChatComponentText;
 public class SwiftEventHandler {
 
 	int ticks = 0;
+	int cooldown = 0;
 
 	@SubscribeEvent
 	public void onPlayerTick(PlayerTickEvent event) {
 		if(event.side.isClient()) {
-			if(ticks >= Swift.ticksBetweenRun) {
+			if(cooldown > 0)
+				cooldown--;
+
+			if(ticks >= Swift.ticksBetweenRun && cooldown == 0) {
 				ticks = 0;
 				EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
 				String[] debug = Minecraft.getMinecraft().debug.split(" ");
@@ -28,6 +31,7 @@ public class SwiftEventHandler {
 							Minecraft.getMinecraft().thePlayer.sendChatMessage(Swift.lowerCommands[i]);
 						if(!Swift.lowerWarnings[i].isEmpty())
 							player.addChatMessage(new ChatComponentText(Swift.lowerWarnings[i]));
+						cooldown = Swift.cooldownTicks;
 					}
 				}
 				for(int i = 0; i < Swift.upperFPSValues.length; i++) {
@@ -36,12 +40,12 @@ public class SwiftEventHandler {
 							Minecraft.getMinecraft().thePlayer.sendChatMessage(Swift.upperCommands[i]);
 						if(!Swift.upperWarnings[i].isEmpty())
 							player.addChatMessage(new ChatComponentText(Swift.upperWarnings[i]));
+						cooldown = Swift.cooldownTicks;
 					}
 				}
 				return;
 			}
 			else {
-				FMLLog.warning("" + ticks);
 				ticks++;
 				return;
 			}

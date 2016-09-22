@@ -12,6 +12,7 @@ public class Swift {
 	public static int[] lowerFPSValues, upperFPSValues;
 	public static String[] lowerCommands, upperCommands;
 	public static String[] lowerWarnings, upperWarnings;
+	public static int cooldownTicks;
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
@@ -23,6 +24,8 @@ public class Swift {
 				"Commands will not run if the player has been in the world for less than this value, given in ticks.");
 		ticksBetweenRun = config.getInt("ticksBetweenRun", Configuration.CATEGORY_GENERAL, 60, 0, Integer.MAX_VALUE,
 				"The frequency with which the check runs.");
+		cooldownTicks = config.getInt("cooldownTicks", Configuration.CATEGORY_GENERAL, 120, 0, Integer.MAX_VALUE,
+				"Cooldown between running of commands/warnings.");
 		lowerFPSValues = config
 				.get(Configuration.CATEGORY_GENERAL, "lowerFPSValues", new int[] {30, 60},
 						"Values at which to run commands/give warnings. If the string is empty it will be safely ignored.")
