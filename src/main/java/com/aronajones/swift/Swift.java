@@ -9,7 +9,7 @@ import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.common.config.Configuration;
 
-@Mod(modid = "swift", name = "Swift", version = "0.0.1", canBeDeactivated = true)
+@Mod(modid = "swift", name = "Swift", version = "0.0.2", canBeDeactivated = true)
 public class Swift {
 	public static int chunkUpdates, ticksExisted, ticksBetweenRun;
 	public static int cooldownTicks;
