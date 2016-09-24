@@ -8,6 +8,7 @@ import net.minecraft.util.ChatComponentText;
 
 public class SwiftEventHandler {
 
+	// TODO Unification
 	int ticks = 0;
 	int cooldown = 0;
 
@@ -25,22 +26,24 @@ public class SwiftEventHandler {
 				int chunkUpdates = Integer.parseInt(debug[2]);
 				if(chunkUpdates >= Swift.chunkUpdates || player.ticksExisted < Swift.ticksExisted)
 					return;
-				for(int i = 0; i < Swift.lowerFPSValues.length; i++) {
-					if(fps < Swift.lowerFPSValues[i]) {
-						if(!Swift.lowerCommands[i].isEmpty())
-							Minecraft.getMinecraft().thePlayer.sendChatMessage(Swift.lowerCommands[i]);
-						if(!Swift.lowerWarnings[i].isEmpty())
-							player.addChatMessage(new ChatComponentText(Swift.lowerWarnings[i]));
+				for(int i = 0; i < Swift.lowers.length; i++) {
+					if(fps < Swift.lowers[i].fps) {
+						if(!Swift.lowers[i].command.isEmpty())
+							player.sendChatMessage(Swift.lowers[i].command);
+						if(!Swift.lowers[i].warning.isEmpty())
+							player.addChatMessage(new ChatComponentText(Swift.lowers[i].warning));
 						cooldown = Swift.cooldownTicks;
+						break;
 					}
 				}
-				for(int i = 0; i < Swift.upperFPSValues.length; i++) {
-					if(fps > Swift.upperFPSValues[i]) {
-						if(!Swift.upperCommands[i].isEmpty())
-							Minecraft.getMinecraft().thePlayer.sendChatMessage(Swift.upperCommands[i]);
-						if(!Swift.upperWarnings[i].isEmpty())
-							player.addChatMessage(new ChatComponentText(Swift.upperWarnings[i]));
+				for(int i = 0; i < Swift.uppers.length; i++) {
+					if(fps > Swift.uppers[i].fps) {
+						if(!Swift.uppers[i].command.isEmpty())
+							player.sendChatMessage(Swift.uppers[i].command);
+						if(!Swift.uppers[i].warning.isEmpty())
+							player.addChatMessage(new ChatComponentText(Swift.uppers[i].warning));
 						cooldown = Swift.cooldownTicks;
+						break;
 					}
 				}
 				return;

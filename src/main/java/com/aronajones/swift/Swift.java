@@ -1,5 +1,8 @@
 package com.aronajones.swift;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -9,10 +12,9 @@ import net.minecraftforge.common.config.Configuration;
 @Mod(modid = "swift", name = "Swift", version = "0.0.1", canBeDeactivated = true)
 public class Swift {
 	public static int chunkUpdates, ticksExisted, ticksBetweenRun;
-	public static int[] lowerFPSValues, upperFPSValues;
-	public static String[] lowerCommands, upperCommands;
-	public static String[] lowerWarnings, upperWarnings;
 	public static int cooldownTicks;
+	public static Value[] lowers = new Value[0];
+	public static Value[] uppers = new Value[0];
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
@@ -26,30 +28,67 @@ public class Swift {
 				"The frequency with which the check runs.");
 		cooldownTicks = config.getInt("cooldownTicks", Configuration.CATEGORY_GENERAL, 120, 0, Integer.MAX_VALUE,
 				"Cooldown between running of commands/warnings.");
-		lowerFPSValues = config
-				.get(Configuration.CATEGORY_GENERAL, "lowerFPSValues", new int[] {30, 60},
+		int[] lowerFPSValues = config
+				.get(Configuration.CATEGORY_GENERAL, "lowerFPSValues", new int[] {30, 60, 25},
 						"Values at which to run commands/give warnings. If the string is empty it will be safely ignored.")
 				.getIntList();
-		lowerCommands = config.getStringList("commandsAtLowerFPSValues", Configuration.CATEGORY_GENERAL,
-				new String[] {"", ""}, "Must be in the same order as FPS values.");
-		lowerWarnings = config.getStringList("warningsAtLowerFPSValues", Configuration.CATEGORY_GENERAL,
-				new String[] {"Under 30.", "Under 60."}, "Must be in the same order as FPS values.");
-		upperFPSValues = config
+		String[] lowerCommands = config.getStringList("commandsAtLowerFPSValues", Configuration.CATEGORY_GENERAL,
+				new String[] {"", "", "test"}, "Must be in the same order as FPS values.");
+		String[] lowerWarnings = config.getStringList("warningsAtLowerFPSValues", Configuration.CATEGORY_GENERAL,
+				new String[] {"Under 30.", "Under 60.", "test"}, "Must be in the same order as FPS values.");
+		int[] upperFPSValues = config
 				.get(Configuration.CATEGORY_GENERAL, "upperFPSValues", new int[] {10},
 						"Values at which to run commands/give warnings. If the string is empty it will be safely ignored.")
 				.getIntList();
-		upperCommands = config.getStringList("commandsAtUpperFPSValues", Configuration.CATEGORY_GENERAL,
+		String[] upperCommands = config.getStringList("commandsAtUpperFPSValues", Configuration.CATEGORY_GENERAL,
 				new String[] {""}, "Must be in the same order as FPS values.");
-		upperWarnings = config.getStringList("warningsAtUpperFPSValues", Configuration.CATEGORY_GENERAL,
+		String[] upperWarnings = config.getStringList("warningsAtUpperFPSValues", Configuration.CATEGORY_GENERAL,
 				new String[] {"Over 100."}, "Must be in the same order as FPS values.");
 		if(config.hasChanged())
 			config.save();
 
+		// TODO Graceful errors
 		assert lowerFPSValues.length == lowerCommands.length;
 		assert lowerCommands.length == lowerWarnings.length;
 		assert upperFPSValues.length == upperCommands.length;
 		assert upperCommands.length == upperWarnings.length;
 
+		ArrayList<Value> lowers = new ArrayList<Value>();
+		ArrayList<Value> uppers = new ArrayList<Value>();
+
+		for(int i = 0; i < lowerFPSValues.length; i++)
+			lowers.add(new Value(lowerFPSValues[i], lowerCommands[i], lowerWarnings[i]));
+
+		for(int i = 0; i < upperFPSValues.length; i++)
+			uppers.add(new Value(upperFPSValues[i], upperCommands[i], upperWarnings[i]));
+
+		lowers.sort(new ComparatorValue());
+		uppers.sort(new ComparatorValue());
+
+		Swift.lowers = lowers.toArray(Swift.lowers);
+		Swift.uppers = uppers.toArray(Swift.uppers);
+
 		FMLCommonHandler.instance().bus().register(new SwiftEventHandler());
+	}
+
+	class Value {
+		public int fps;
+		public String command;
+		public String warning;
+
+		public Value(int fps, String command, String warning) {
+			this.fps = fps;
+			this.command = command;
+			this.warning = warning;
+		}
+	}
+
+	class ComparatorValue implements Comparator<Value> {
+
+		@Override
+		public int compare(Value o1, Value o2) {
+			return Integer.compare(o1.fps, o2.fps);
+		}
+
 	}
 }
