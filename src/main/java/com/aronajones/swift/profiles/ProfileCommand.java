@@ -52,7 +52,7 @@ public class ProfileCommand extends CommandBase {
 
 	public ProfileCommand() {
 		this.gson = new GsonBuilder().setPrettyPrinting().create();
-		this.profiles = readFile(Reference.config);
+		this.profiles = readFile(Swift.profileConfig);
 	}
 
 	@Override
@@ -88,7 +88,7 @@ public class ProfileCommand extends CommandBase {
 	public void processCommand(ICommandSender commandSender, String[] args) {
 		if(args.length > 0)
 			if(args[0].equalsIgnoreCase(LIST)) {
-				this.profiles = readFile(Reference.config);
+				this.profiles = readFile(Swift.profileConfig);
 
 				if(this.profiles.size() == 0) {
 					commandSender.addChatMessage(new ChatComponentTranslation(LIST_EMPTY));
@@ -103,7 +103,7 @@ public class ProfileCommand extends CommandBase {
 				return;
 			}
 			else if(args[0].equalsIgnoreCase(LOAD)) {
-				this.profiles = readFile(Reference.config);
+				this.profiles = readFile(Swift.profileConfig);
 
 				if(args.length > 1) {
 					Profile profile = this.profiles.get(args[1]);
@@ -121,12 +121,12 @@ public class ProfileCommand extends CommandBase {
 				throw new WrongUsageException(LOAD_USAGE);
 			}
 			else if(args[0].equalsIgnoreCase(SAVE)) {
-				this.profiles = readFile(Reference.config);
+				this.profiles = readFile(Swift.profileConfig);
 
 				if(args.length > 1) {
 					this.profiles.put(args[1], Profile.fromGameSettings(Minecraft.getMinecraft().gameSettings));
 
-					saveFile(Reference.config);
+					saveFile(Swift.profileConfig);
 
 					commandSender.addChatMessage(new ChatComponentTranslation(SAVE_SUCCESS, args[1]));
 					return;
@@ -135,7 +135,7 @@ public class ProfileCommand extends CommandBase {
 				throw new WrongUsageException(SAVE_USAGE);
 			}
 			else if(args[0].equalsIgnoreCase(DELETE)) {
-				this.profiles = readFile(Reference.config);
+				this.profiles = readFile(Swift.profileConfig);
 
 				if(args.length > 1) {
 					if(this.profiles.remove(args[1]) == null) {
@@ -143,7 +143,7 @@ public class ProfileCommand extends CommandBase {
 						return;
 					}
 
-					saveFile(Reference.config);
+					saveFile(Swift.profileConfig);
 
 					commandSender.addChatMessage(new ChatComponentTranslation(DELETE_SUCCESS, args[1]));
 					return;

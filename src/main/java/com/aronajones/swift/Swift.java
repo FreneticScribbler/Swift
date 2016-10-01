@@ -1,9 +1,9 @@
 package com.aronajones.swift;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.aronajones.swift.profiles.ProfileCommand;
@@ -21,19 +21,23 @@ public class Swift {
 
 	public static final String MODID = "swift";
 	public static final String NAME = "Swift";
-	public static final String VERSION = "0.0.2";
+	public static final String VERSION = "0.0.3";
 
 	public static int chunkUpdates, ticksExisted, ticksBetweenRun;
 	public static int cooldownTicks;
 	public static Value[] lowers = new Value[0];
 	public static Value[] uppers = new Value[0];
 
-	public static Logger logger = LogManager.getLogger(MODID);
+	public static Logger logger;
+	public static File profileConfig = null;
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
+		logger = event.getModLog();
 		if(FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
 			logger.warn("WARNING! You're loading a CLIENT only mod on a server!");
+		profileConfig = new File(event.getModConfigurationDirectory() + File.separator + MODID + "_profiles.cfg");
+
 		Configuration config = new Configuration(event.getSuggestedConfigurationFile());
 		config.load();
 		chunkUpdates = config.getInt("chunkUpdates", Configuration.CATEGORY_GENERAL, 15, 0, Integer.MAX_VALUE,
@@ -85,7 +89,6 @@ public class Swift {
 		Swift.uppers = uppers.toArray(Swift.uppers);
 
 		FMLCommonHandler.instance().bus().register(new SwiftEventHandler());
-
 		ClientCommandHandler.instance.registerCommand(new ProfileCommand());
 	}
 

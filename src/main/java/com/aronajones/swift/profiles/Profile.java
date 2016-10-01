@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.aronajones.swift.Swift;
+
 import cpw.mods.fml.client.FMLClientHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SoundCategory;
@@ -77,7 +79,7 @@ public class Profile {
 					this.optifine.put(name, field.get(gameSettings));
 				}
 				catch(Exception e) {
-					Reference.logger.error(String.format("Can not get property '%s'!", name), e);
+					Swift.logger.error(String.format("Can not get property '%s'!", name), e);
 				}
 		}
 	}
@@ -100,7 +102,7 @@ public class Profile {
 						field.set(gameSettings, value);
 				}
 				catch(Exception e) {
-					Reference.logger.error(String.format("Can not set property '%s'!", name), e);
+					Swift.logger.error(String.format("Can not set property '%s'!", name), e);
 				}
 		}
 	}

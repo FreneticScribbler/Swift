@@ -5,6 +5,7 @@ import cpw.mods.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.util.ChatComponentText;
+import net.minecraftforge.client.ClientCommandHandler;
 
 public class SwiftEventHandler {
 
@@ -29,7 +30,7 @@ public class SwiftEventHandler {
 				for(int i = 0; i < Swift.lowers.length; i++) {
 					if(fps < Swift.lowers[i].fps) {
 						if(!Swift.lowers[i].command.isEmpty())
-							player.sendChatMessage(Swift.lowers[i].command);
+							ClientCommandHandler.instance.executeCommand(player, Swift.lowers[i].command);
 						if(!Swift.lowers[i].warning.isEmpty())
 							player.addChatMessage(new ChatComponentText(Swift.lowers[i].warning));
 						cooldown = Swift.cooldownTicks;
@@ -38,8 +39,9 @@ public class SwiftEventHandler {
 				}
 				for(int i = 0; i < Swift.uppers.length; i++) {
 					if(fps > Swift.uppers[i].fps) {
-						if(!Swift.uppers[i].command.isEmpty())
-							player.sendChatMessage(Swift.uppers[i].command);
+						if(!Swift.uppers[i].command.isEmpty()) {
+							ClientCommandHandler.instance.executeCommand(player, Swift.uppers[i].command);
+						}
 						if(!Swift.uppers[i].warning.isEmpty())
 							player.addChatMessage(new ChatComponentText(Swift.uppers[i].warning));
 						cooldown = Swift.cooldownTicks;
