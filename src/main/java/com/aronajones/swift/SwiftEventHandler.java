@@ -12,6 +12,7 @@ public class SwiftEventHandler {
 	// TODO Unification
 	int ticks = 0;
 	int cooldown = 0;
+	int lastLoadedProfile = -1;
 
 	@SubscribeEvent
 	public void onPlayerTick(PlayerTickEvent event) {
@@ -29,22 +30,31 @@ public class SwiftEventHandler {
 					return;
 				for(int i = 0; i < Swift.lowers.length; i++) {
 					if(fps < Swift.lowers[i].fps) {
-						if(!Swift.lowers[i].command.isEmpty())
-							ClientCommandHandler.instance.executeCommand(player, Swift.lowers[i].command);
-						if(!Swift.lowers[i].warning.isEmpty())
-							player.addChatMessage(new ChatComponentText(Swift.lowers[i].warning));
+						if(!i == lastLoadedProfile) {
+							if(!Swift.lowers[i].command.isEmpty()) {
+								ClientCommandHandler.instance.executeCommand(player, Swift.lowers[i].command);
+							}
+							if(!Swift.lowers[i].warning.isEmpty()) {
+								player.addChatMessage(new ChatComponentText(Swift.lowers[i].warning));
+							}
+						}
 						cooldown = Swift.cooldownTicks;
+						lastLoadedProfile = i;
 						break;
 					}
 				}
 				for(int i = 0; i < Swift.uppers.length; i++) {
 					if(fps > Swift.uppers[i].fps) {
-						if(!Swift.uppers[i].command.isEmpty()) {
-							ClientCommandHandler.instance.executeCommand(player, Swift.uppers[i].command);
+						if(!i == lastLoadedProfile) {
+							if(!Swift.uppers[i].command.isEmpty()) {
+								ClientCommandHandler.instance.executeCommand(player, Swift.uppers[i].command);
+							}
+							if(!Swift.uppers[i].warning.isEmpty()) {
+								player.addChatMessage(new ChatComponentText(Swift.uppers[i].warning));
+							}
 						}
-						if(!Swift.uppers[i].warning.isEmpty())
-							player.addChatMessage(new ChatComponentText(Swift.uppers[i].warning));
 						cooldown = Swift.cooldownTicks;
+						lastLoadedProfile = i;
 						break;
 					}
 				}
