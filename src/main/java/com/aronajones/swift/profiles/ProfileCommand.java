@@ -114,7 +114,7 @@ public class ProfileCommand extends CommandBase {
 
 					Profile.toGameSettings(profile).saveOptions();
 
-					commandSender.addChatMessage(new ChatComponentTranslation(LOAD_SUCCESS, args[1]));
+					//commandSender.addChatMessage(new ChatComponentTranslation(LOAD_SUCCESS, args[1]));
 					return;
 				}
 
