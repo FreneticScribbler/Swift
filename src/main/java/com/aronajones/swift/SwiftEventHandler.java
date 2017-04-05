@@ -30,7 +30,7 @@ public class SwiftEventHandler {
 					return;
 				for(int i = 0; i < Swift.lowers.length; i++) {
 					if(fps < Swift.lowers[i].fps) {
-						if(!i == lastLoadedProfile) {
+						if(i != lastLoadedProfile) {
 							if(!Swift.lowers[i].command.isEmpty()) {
 								ClientCommandHandler.instance.executeCommand(player, Swift.lowers[i].command);
 							}
@@ -45,7 +45,7 @@ public class SwiftEventHandler {
 				}
 				for(int i = 0; i < Swift.uppers.length; i++) {
 					if(fps > Swift.uppers[i].fps) {
-						if(!i == lastLoadedProfile) {
+						if(i != lastLoadedProfile) {
 							if(!Swift.uppers[i].command.isEmpty()) {
 								ClientCommandHandler.instance.executeCommand(player, Swift.uppers[i].command);
 							}
