@@ -16,7 +16,7 @@ import cpw.mods.fml.relauncher.Side;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.common.config.Configuration;
 
-@Mod(modid = Swift.MODID, name = Swift.NAME, version = Swift.VERSION, canBeDeactivated = true)
+@Mod(modid = Swift.MODID, name = Swift.NAME, version = Swift.VERSION, canBeDeactivated = false)
 public class Swift {
 
 	public static final String MODID = "swift";

@@ -1,5 +1,6 @@
 package com.aronajones.swift;
 
+import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import net.minecraft.client.Minecraft;
@@ -26,6 +27,9 @@ public class SwiftEventHandler {
 				String[] debug = Minecraft.getMinecraft().debug.split(" ");
 				int fps = Integer.parseInt(debug[0]);
 				int chunkUpdates = Integer.parseInt(debug[2]);
+				if(FMLClientHandler.instance().hasOptifine()) {
+					chunkUpdates = chunkUpdates - fps;
+				}
 				if(chunkUpdates >= Swift.chunkUpdates || player.ticksExisted < Swift.ticksExisted)
 					return;
 				for(int i = 0; i < Swift.lowers.length; i++) {
