@@ -172,24 +172,24 @@ public class Profile {
 
 	public static GameSettings toGameSettings(Profile profile) {
 		GameSettings gameSettings = Minecraft.getMinecraft().gameSettings;
-		gameSettings.invertMouse = profile.invertMouse;
-		gameSettings.mouseSensitivity = profile.mouseSensitivity;
-		gameSettings.fovSetting = profile.fov;
+		//gameSettings.invertMouse = profile.invertMouse;
+		//gameSettings.mouseSensitivity = profile.mouseSensitivity;
+		//gameSettings.fovSetting = profile.fov;
 		gameSettings.gammaSetting = profile.gamma;
 		gameSettings.saturation = profile.saturation;
 		gameSettings.renderDistanceChunks = profile.renderDistance;
-		gameSettings.guiScale = profile.guiScale;
+		//gameSettings.guiScale = profile.guiScale;
 		gameSettings.particleSetting = profile.particles;
-		gameSettings.viewBobbing = profile.viewBobbing;
-		gameSettings.anaglyph = profile.anaglyph;
+		//gameSettings.viewBobbing = profile.viewBobbing;
+		//gameSettings.anaglyph = profile.anaglyph;
 		gameSettings.advancedOpengl = profile.advancedOpengl;
 		gameSettings.limitFramerate = profile.maxFps;
 		gameSettings.fboEnable = profile.fbo;
-		gameSettings.difficulty = EnumDifficulty.getDifficultyEnum(profile.difficulty);
+		//gameSettings.difficulty = EnumDifficulty.getDifficultyEnum(profile.difficulty);
 		gameSettings.fancyGraphics = profile.fancyGraphics;
 		gameSettings.ambientOcclusion = profile.ambientOcclusion;
 		gameSettings.clouds = profile.clouds;
-		if(profile.resourcePacks != null)
+		/*if(profile.resourcePacks != null)
 			gameSettings.resourcePacks = profile.resourcePacks;
 		gameSettings.language = profile.language;
 		gameSettings.chatVisibility = EntityPlayer.EnumChatVisibility.getEnumChatVisibility(profile.chatVisibility);
@@ -198,12 +198,12 @@ public class Profile {
 		gameSettings.chatLinksPrompt = profile.chatLinksPrompt;
 		gameSettings.chatOpacity = profile.chatOpacity;
 		gameSettings.snooperEnabled = profile.snooper;
-		gameSettings.fullScreen = profile.fullscreen;
+		gameSettings.fullScreen = profile.fullscreen;*/
 		gameSettings.enableVsync = profile.vsync;
-		gameSettings.advancedItemTooltips = profile.advancedItemTooltips;
+		//gameSettings.advancedItemTooltips = profile.advancedItemTooltips;
 		gameSettings.pauseOnLostFocus = profile.pauseOnLostFocus;
-		gameSettings.showCape = profile.showCape;
-		gameSettings.touchscreen = profile.touchscreen;
+		//gameSettings.showCape = profile.showCape;
+		/*gameSettings.touchscreen = profile.touchscreen;
 		gameSettings.overrideWidth = profile.overrideWidth;
 		gameSettings.overrideHeight = profile.overrideHeight;
 		gameSettings.heldItemTooltips = profile.heldItemTooltips;
@@ -211,10 +211,10 @@ public class Profile {
 		gameSettings.chatHeightUnfocused = profile.chatHeightUnfocused;
 		gameSettings.chatScale = profile.chatScale;
 		gameSettings.chatWidth = profile.chatWidth;
-		gameSettings.showInventoryAchievementHint = profile.showInventoryAchievementHint;
+		gameSettings.showInventoryAchievementHint = profile.showInventoryAchievementHint;*/
 		gameSettings.mipmapLevels = profile.mipmapLevels;
 		gameSettings.anisotropicFiltering = profile.anisotropicFiltering;
-		gameSettings.field_152400_J = profile.streamBytesPerPixel;
+		/*gameSettings.field_152400_J = profile.streamBytesPerPixel;
 		gameSettings.field_152401_K = profile.streamMicVolume;
 		gameSettings.field_152402_L = profile.streamSystemVolume;
 		gameSettings.field_152403_M = profile.streamKbps;
@@ -225,7 +225,7 @@ public class Profile {
 		gameSettings.field_152408_R = profile.streamChatEnabled;
 		gameSettings.field_152409_S = profile.streamChatUserFilter;
 		gameSettings.field_152410_T = profile.streamMicToggleBehavior;
-		gameSettings.forceUnicodeFont = profile.forceUnicodeFont;
+		gameSettings.forceUnicodeFont = profile.forceUnicodeFont;*/
 		if(profile.volume != null)
 			for(Map.Entry<SoundCategory, Float> entry : profile.volume.entrySet())
 				gameSettings.setSoundLevel(entry.getKey(), entry.getValue());

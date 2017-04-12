@@ -21,7 +21,7 @@ public class Swift {
 
 	public static final String MODID = "swift";
 	public static final String NAME = "Swift";
-	public static final String VERSION = "0.0.4";
+	public static final String VERSION = "0.0.4.1";
 
 	public static int chunkUpdates, ticksExisted, ticksBetweenRun;
 	public static int cooldownTicks;
