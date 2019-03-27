@@ -38,7 +38,7 @@ public class ProfileCommand extends CommandBase {
 
 	public static final String LOAD_USAGE = "commands.profiles.load.usage";
 	public static final String LOAD_INVALID = "commands.profiles.load.invalid";
-	public static final String LOAD_SUCCESS = "commands.profiles.load.success";
+	//public static final String LOAD_SUCCESS = "commands.profiles.load.success";
 
 	public static final String SAVE_USAGE = "commands.profiles.save.usage";
 	public static final String SAVE_SUCCESS = "commands.profiles.save.success";

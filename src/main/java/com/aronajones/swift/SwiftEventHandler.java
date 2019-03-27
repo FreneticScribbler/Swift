@@ -1,11 +1,13 @@
 package com.aronajones.swift;
 
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.event.FMLEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.PlayerTickEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraftforge.client.ClientCommandHandler;
 
 public class SwiftEventHandler {
@@ -20,7 +22,7 @@ public class SwiftEventHandler {
 
 	@SubscribeEvent
 	public void onPlayerTick(PlayerTickEvent event) {
-		if(event.side.isClient()) {
+		if(event.side.isClient() && Swift.isEnabled) {
 			if(cooldown > 0)
 				// Deduct the cooldown on every tick
 				cooldown--;
@@ -135,6 +137,7 @@ public class SwiftEventHandler {
 						break;
 					}
 				}
+
 				return;
 			}
 			else {

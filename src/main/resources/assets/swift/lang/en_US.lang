@@ -11,3 +11,6 @@ commands.profiles.save.success=Active profile saved as '%s'.
 commands.profiles.delete.usage=/profile delete [profile name]
 commands.profiles.delete.invalid=Profile '%s' does not exist.
 commands.profiles.delete.success=Deleted profile '%s'.
+commands.swift.usage=/swift <disable|enable>
+commands.swift.enabled=Swift is now enabled for this session.
+commands.swift.disabled=Swift is now disabled for this session.

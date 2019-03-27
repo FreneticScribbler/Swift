@@ -77,8 +77,7 @@ public class Profile {
 			if(name.startsWith("of") && !name.equals("ofKeyBindZoom"))
 				try {
 					this.optifine.put(name, field.get(gameSettings));
-				}
-				catch(Exception e) {
+				} catch(Exception e) {
 					Swift.logger.error(String.format("Can not get property '%s'!", name), e);
 				}
 		}

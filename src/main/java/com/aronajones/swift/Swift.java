@@ -17,12 +17,14 @@ import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.common.config.Configuration;
 import org.lwjgl.opengl.Display;
 
-@Mod(modid = Swift.MODID, name = Swift.NAME, version = Swift.VERSION, canBeDeactivated = false)
+@Mod(modid = Swift.MODID, name = Swift.NAME, version = Swift.VERSION)
 public class Swift {
 
 	public static final String MODID = "swift";
 	public static final String NAME = "Swift";
-	public static final String VERSION = "0.0.4.2";
+	public static final String VERSION = "0.0.4.3";
+
+	public static boolean isEnabled;
 
 	public static int chunkUpdates, ticksExisted, ticksBetweenRun;
 	public static int cooldownTicks;
@@ -70,6 +72,9 @@ public class Swift {
 				.get(Configuration.CATEGORY_GENERAL, "upperFPSValuesOverrides", new boolean[]{false, false, false},
 						"Whether or not to ignore the client's refresh rate when running a corresponding upperFPSValue. Set to true to ignore, that is, force the execution of any commands and warnings associated with the corresponding upperFPSValue, regardless of the client's refresh rate.")
 				.getBooleanList();
+		isEnabled = config
+				.get(Configuration.CATEGORY_GENERAL, "enableSwift", new Boolean(true), "Whether or not Swift is enabled. Note that profile commands will still work regardless of this setting.")
+				.getBoolean();
 		if(config.hasChanged())
 			config.save();
 
@@ -97,6 +102,7 @@ public class Swift {
 
 		FMLCommonHandler.instance().bus().register(new SwiftEventHandler());
 		ClientCommandHandler.instance.registerCommand(new ProfileCommand());
+		ClientCommandHandler.instance.registerCommand(new SwiftCommand());
 
 		// Get the refresh rate of the player's screen (only checked at launch as LWJGL doesn't update this value after the game is launched)
 		if(Display.isFullscreen()) {
