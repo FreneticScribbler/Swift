@@ -22,7 +22,7 @@ public class Swift {
 
 	public static final String MODID = "swift";
 	public static final String NAME = "Swift";
-	public static final String VERSION = "0.0.4.3";
+	public static final String VERSION = "0.5.0";
 
 	public static boolean isEnabled;
 
@@ -38,7 +38,7 @@ public class Swift {
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		logger = event.getModLog();
-		if(FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+		if(FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER)
 			logger.warn("WARNING! You're loading a CLIENT only mod on a server!");
 		profileConfig = new File(event.getModConfigurationDirectory() + File.separator + MODID + "_profiles.cfg");
 
@@ -73,7 +73,8 @@ public class Swift {
 						"Whether or not to ignore the client's refresh rate when running a corresponding upperFPSValue. Set to true to ignore, that is, force the execution of any commands and warnings associated with the corresponding upperFPSValue, regardless of the client's refresh rate.")
 				.getBooleanList();
 		isEnabled = config
-				.get(Configuration.CATEGORY_GENERAL, "enableSwift", new Boolean(true), "Whether or not Swift is enabled. Note that profile commands will still work regardless of this setting.")
+				.get(Configuration.CATEGORY_GENERAL, "enableSwift", true,
+						"Whether or not Swift is enabled. Note that profile commands will still work regardless of this setting.")
 				.getBoolean();
 		if(config.hasChanged())
 			config.save();
@@ -95,7 +96,7 @@ public class Swift {
 			uppers.add(new Value(upperFPSValues[i], upperCommands[i], upperWarnings[i], upperFPSValuesOverrides[i]));
 
 		lowers.sort(new ComparatorValue());
-		uppers.sort(new ComparatorValue());
+		uppers.sort(new ReverseComparatorValue());
 
 		Swift.lowers = lowers.toArray(Swift.lowers);
 		Swift.uppers = uppers.toArray(Swift.uppers);
@@ -113,12 +114,12 @@ public class Swift {
 	}
 
 	class Value {
-		public int fps;
-		public String command;
-		public String warning;
-		public boolean overrides;
+		int fps;
+		String command;
+		String warning;
+		boolean overrides;
 
-		public Value(int fps, String command, String warning, boolean overrides) {
+		Value(int fps, String command, String warning, boolean overrides) {
 			this.fps = fps;
 			this.command = command;
 			this.warning = warning;
@@ -131,6 +132,16 @@ public class Swift {
 		@Override
 		public int compare(Value o1, Value o2) {
 			return Integer.compare(o1.fps, o2.fps);
+		}
+
+	}
+
+	class ReverseComparatorValue implements Comparator<Value> {
+
+		@Override
+		public int compare(Value o1, Value o2) {
+			// same as the normal ComparatorValue, except reversed so that the checks are done correctly
+			return Integer.compare(o2.fps, o1.fps);
 		}
 
 	}

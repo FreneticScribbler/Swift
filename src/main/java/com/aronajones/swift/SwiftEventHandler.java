@@ -4,31 +4,42 @@ import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.event.FMLEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.PlayerTickEvent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ChatComponentTranslation;
 import net.minecraftforge.client.ClientCommandHandler;
+import org.lwjgl.input.Keyboard;
 
 public class SwiftEventHandler {
 
 	// TODO Unification
-	int ticks = 0;
-	int cooldown = 0;
-	int lastLoadedProfile = -1;
-	int secondLastLoadedProfile = -1;
+	private int ticks = 0;
+	private int cooldown = 0;
 
-	int refreshRate = 0;
+	private int lastLoadedProfile = -1;
+	private int secondLastLoadedProfile = -1;
 
-	@SubscribeEvent
+	@SubscribeEvent @SideOnly(Side.CLIENT)
 	public void onPlayerTick(PlayerTickEvent event) {
 		if(event.side.isClient() && Swift.isEnabled) {
+			//Swift.logger.info("cooldown: " + cooldown);
+			//Swift.logger.info("ticks: " + ticks);
+
+			if(Keyboard.isKeyDown(Minecraft.getMinecraft().gameSettings.keyBindScreenshot.getKeyCode())) { // if the screenshot key is being pressed
+				//Swift.logger.info("screenshot key pressed");
+				if(cooldown < (Swift.cooldownTicks + 90)) { // don't add any extra ticks if the cooldown is already sufficient
+					cooldown = cooldown + 90; // add 90 ticks to the cooldown to prevent Swift triggering while taking a screenshot
+				}
+			}
+
 			if(cooldown > 0)
 				// Deduct the cooldown on every tick
 				cooldown--;
 
 			// If it's past the cooldown time and the tick interval time
-			if(ticks >= Swift.ticksBetweenRun && cooldown == 0) {
+			if(ticks >= Swift.ticksBetweenRun && cooldown < 1) {
 				// reset the ticks interval
 				ticks = 0;
 
@@ -37,11 +48,12 @@ public class SwiftEventHandler {
 
 				// grab all the details from the F3 debug screen
 				String[] debug = Minecraft.getMinecraft().debug.split(" ");
+
 				int fps = Integer.parseInt(debug[0]); // grab the current FPS as shown on the debug screen
 				int chunkUpdates = Integer.parseInt(debug[2]); // do the same for chunk updates
 
 				// Optifine tends to attempt to keep the chunk updates to at least the framerate.
-				if(FMLClientHandler.instance().hasOptifine()) {
+				if(FMLClientHandler.instance().hasOptifine() && chunkUpdates > fps) {
 					chunkUpdates = chunkUpdates - fps; // Take this into account for consistent behaviour.
 				}
 
@@ -85,9 +97,9 @@ public class SwiftEventHandler {
 
 				// for each entry in the "uppers" profile entries config
 				for(int i = 0; i < Swift.uppers.length; i++) {
-					/*player.addChatMessage(new ChatComponentText("Swift debug: current uppers: " + Swift.uppers[i].warning));
-					player.addChatMessage(new ChatComponentText("Uppers length: " + Swift.uppers.length));
-					player.addChatMessage(new ChatComponentText("Swift debug: Math.ceil(refreshRate * 0.8) = " + Math.ceil(refreshRate * 0.8)));*/
+					//player.addChatMessage(new ChatComponentText("Swift debug: current uppers: " + Swift.uppers[i].warning));
+					//player.addChatMessage(new ChatComponentText("Swift debug: Uppers length: " + Swift.uppers.length));
+					//player.addChatMessage(new ChatComponentText("Swift debug: Math.ceil(refreshRate * 0.8) = " + Math.ceil(Swift.refreshRate * 0.8)));
 
                     // refreshRate * 0.6:
 					// 144hz = 86.4
@@ -108,7 +120,7 @@ public class SwiftEventHandler {
 					// 60hz = 48
 
 					// if the framerate is above the "uppers" profile entry and above (or equal to) 80% of the monitor's refresh rate. Or if it's above the "uppers" and it's an override.
-					if((fps > Swift.uppers[i].fps && Swift.uppers[i].fps >= Math.ceil(refreshRate * 0.8)) || (fps > Swift.uppers[i].fps && Swift.uppers[i].overrides)) {
+					if((fps > Swift.uppers[i].fps && Swift.uppers[i].fps >= Math.ceil(Swift.refreshRate * 0.8)) || (fps > Swift.uppers[i].fps && Swift.uppers[i].overrides)) {
 
 						// if the profile we're about to load isn't already loaded
 						if(i != lastLoadedProfile) {
@@ -137,13 +149,10 @@ public class SwiftEventHandler {
 						break;
 					}
 				}
-
-				return;
 			}
 			else {
 				// if we're still cooling down, increment the tick timer
 				ticks++;
-				return;
 			}
 		}
 	}
