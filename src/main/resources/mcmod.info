@@ -2,8 +2,8 @@
 {
   "modid": "swift",
   "name": "Swift",
-  "description": "Automatically fine-tunes your experience for the best possible settings at an ideal framerate",
-  "version": "0.0.4.3",
+  "description": "Automatically fine-tunes your experience for the best possible settings at an ideal framerate.",
+  "version": "0.5.0",
   "mcversion": "1.7.10",
   "url": "https://bit.ly/cmdownload",
   "updateUrl": "",
