@@ -171,9 +171,9 @@ public class Profile {
 
 	public static GameSettings toGameSettings(Profile profile) {
 		GameSettings gameSettings = Minecraft.getMinecraft().gameSettings;
-		//gameSettings.invertMouse = profile.invertMouse;
-		//gameSettings.mouseSensitivity = profile.mouseSensitivity;
-		//gameSettings.fovSetting = profile.fov;
+		/*gameSettings.invertMouse = profile.invertMouse;
+		gameSettings.mouseSensitivity = profile.mouseSensitivity;
+		gameSettings.fovSetting = profile.fov;*/
 		gameSettings.gammaSetting = profile.gamma;
 		gameSettings.saturation = profile.saturation;
 		gameSettings.renderDistanceChunks = profile.renderDistance;
@@ -201,8 +201,8 @@ public class Profile {
 		gameSettings.enableVsync = profile.vsync;
 		//gameSettings.advancedItemTooltips = profile.advancedItemTooltips;
 		gameSettings.pauseOnLostFocus = profile.pauseOnLostFocus;
-		//gameSettings.showCape = profile.showCape;
-		/*gameSettings.touchscreen = profile.touchscreen;
+		/*gameSettings.showCape = profile.showCape;
+		gameSettings.touchscreen = profile.touchscreen;
 		gameSettings.overrideWidth = profile.overrideWidth;
 		gameSettings.overrideHeight = profile.overrideHeight;
 		gameSettings.heldItemTooltips = profile.heldItemTooltips;

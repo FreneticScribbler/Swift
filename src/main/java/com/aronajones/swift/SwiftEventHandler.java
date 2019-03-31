@@ -10,7 +10,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.client.ClientCommandHandler;
+import net.minecraftforge.client.MinecraftForgeClient;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.Display;
 
 public class SwiftEventHandler {
 
@@ -20,6 +22,14 @@ public class SwiftEventHandler {
 
 	private int lastLoadedProfile = -1;
 	private int secondLastLoadedProfile = -1;
+	private int previousFramerateCap = 999;
+	private boolean idleModeRunning = false;
+
+	private void delaySwift(int delayTicks) {
+		if(cooldown < (Swift.cooldownTicks + delayTicks)) { // don't add any extra ticks if the cooldown is already sufficient
+			cooldown = cooldown + delayTicks; // add 90 ticks to the cooldown to prevent Swift triggering during something important (e.g. screenshot or clock speed ramp up)
+		}
+	}
 
 	@SubscribeEvent @SideOnly(Side.CLIENT)
 	public void onPlayerTick(PlayerTickEvent event) {
@@ -27,11 +37,28 @@ public class SwiftEventHandler {
 			//Swift.logger.info("cooldown: " + cooldown);
 			//Swift.logger.info("ticks: " + ticks);
 
+			boolean inFocus = (Display.isActive() || Minecraft.getMinecraft().inGameHasFocus); // set inFocus to true if either the window is in focus or the game is not paused in a multiplayer server
+
+			if(Swift.idleModeEnabled) { // if idle mode is enabled in the config
+				if(inFocus && idleModeRunning) { // if the window is currently in focus and idle mode is already running
+					Minecraft.getMinecraft().gameSettings.limitFramerate = previousFramerateCap; // undo idle mode
+					idleModeRunning = false; // disable idle mode
+					delaySwift(60); // add 60 ticks to the cooldown (if necessary) to help prevent Swift from triggering during GPU clock speed ramp up
+					return; // done
+				} else if(!inFocus && !idleModeRunning){ // if the window isn't in focus and idle mode isn't already running
+					idleModeRunning = true; // enable idle mode
+					previousFramerateCap = Minecraft.getMinecraft().gameSettings.limitFramerate; // store the framerate before running idle mode so it can be undone later
+					Minecraft.getMinecraft().gameSettings.limitFramerate = Swift.idleModeFramerate; // set the idle mode framerate
+					System.gc(); // use this opportunity to advise the JVM to run the garbage collector
+					return; // done
+				} else if(idleModeRunning) {
+					return; // don't run other Swift triggers in idle mode
+				}
+			}
+
 			if(Keyboard.isKeyDown(Minecraft.getMinecraft().gameSettings.keyBindScreenshot.getKeyCode())) { // if the screenshot key is being pressed
 				//Swift.logger.info("screenshot key pressed");
-				if(cooldown < (Swift.cooldownTicks + 90)) { // don't add any extra ticks if the cooldown is already sufficient
-					cooldown = cooldown + 90; // add 90 ticks to the cooldown to prevent Swift triggering while taking a screenshot
-				}
+				delaySwift(90); // add 90 ticks to the cooldown (if necessary) to help prevent Swift from triggering while taking a screenshot
 			}
 
 			if(cooldown > 0)

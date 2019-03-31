@@ -1,2 +1,2 @@
 # ![Swift](https://github.com/warlordjones/Swift/raw/master/swiftlogo-256x.png)
-Mod to enable dynamic performance. 
+A Minecraft mod that automatically fine-tunes your experience for the best possible settings at an ideal framerate, while also slightly improving battery life on laptops.

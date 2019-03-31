@@ -22,7 +22,7 @@ public class Swift {
 
 	public static final String MODID = "swift";
 	public static final String NAME = "Swift";
-	public static final String VERSION = "0.5.0";
+	public static final String VERSION = "0.5.1";
 
 	public static boolean isEnabled;
 
@@ -34,6 +34,9 @@ public class Swift {
 
 	public static Logger logger;
 	public static File profileConfig = null;
+
+	public static Boolean idleModeEnabled;
+	public static int idleModeFramerate;
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
@@ -59,7 +62,7 @@ public class Swift {
 		String[] lowerCommands = config.getStringList("commandsAtLowerFPSValues", Configuration.CATEGORY_GENERAL,
 				new String[]{"", "", ""}, "Must be in the same order as FPS values.");
 		String[] lowerWarnings = config.getStringList("warningsAtLowerFPSValues", Configuration.CATEGORY_GENERAL,
-				new String[]{"Under 30.", "Under 60.", "Under 25"}, "Must be in the same order as FPS values.");
+				new String[]{"Under 30.", "Under 60.", "Under 25."}, "Must be in the same order as FPS values.");
 		int[] upperFPSValues = config
 				.get(Configuration.CATEGORY_GENERAL, "upperFPSValues", new int[]{40, 100, 120},
 						"Values at which to run commands/give warnings. If the string is empty it will be safely ignored.")
@@ -76,6 +79,14 @@ public class Swift {
 				.get(Configuration.CATEGORY_GENERAL, "enableSwift", true,
 						"Whether or not Swift is enabled. Note that profile commands will still work regardless of this setting.")
 				.getBoolean();
+		idleModeEnabled = config.get(Configuration.CATEGORY_GENERAL, "enableIdleMode", true,
+				"Should Swift check if the game is minimised or inactive and limit framerate?")
+				.getBoolean();
+		idleModeFramerate = config.get(Configuration.CATEGORY_GENERAL, "idleModeFramerate", 8,
+				"The framerate cap when the game window is in a minimised or inactive state. The lower the value, the better the efficiency gain but the longer to ramp up to the normal framerate again.")
+				.setMinValue(2)
+				.setMaxValue(100)
+				.getInt();
 		if(config.hasChanged())
 			config.save();
 
