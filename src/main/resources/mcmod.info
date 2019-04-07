@@ -3,7 +3,7 @@
   "modid": "swift",
   "name": "Swift",
   "description": "Swift automatically fine-tunes your experience for the best possible settings at an ideal framerate, while also slightly improving battery life on laptops.",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "mcversion": "1.7.10",
   "url": "https://bit.ly/cmdownload",
   "updateUrl": "",

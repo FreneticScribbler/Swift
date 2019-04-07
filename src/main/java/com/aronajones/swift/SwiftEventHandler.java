@@ -8,9 +8,14 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
+import net.minecraft.client.settings.GameSettings;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ScreenShotHelper;
 import net.minecraftforge.client.ClientCommandHandler;
+import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraftforge.common.ForgeHooks;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 
@@ -56,9 +61,16 @@ public class SwiftEventHandler {
 				}
 			}
 
-			if(Keyboard.isKeyDown(Minecraft.getMinecraft().gameSettings.keyBindScreenshot.getKeyCode())) { // if the screenshot key is being pressed
-				//Swift.logger.info("screenshot key pressed");
-				delaySwift(90); // add 90 ticks to the cooldown (if necessary) to help prevent Swift from triggering while taking a screenshot
+			try {
+				//if(Keyboard.isKeyDown(Minecraft.getMinecraft().gameSettings.keyBindScreenshot.getKeyCode())) { // if the screenshot key is being pressed
+				if(Minecraft.getMinecraft().gameSettings.keyBindScreenshot.getIsKeyPressed()) { // if the screenshot key is being pressed
+					//Swift.logger.info("screenshot key pressed");
+					delaySwift(90); // add 90 ticks to the cooldown (if necessary) to help prevent Swift from triggering while taking a screenshot
+				} else {
+					//Swift.logger.info("screenshot key NOT pressed");
+				}
+			} catch (Exception e) {
+				//Swift.logger.warn("Error checking the screenshot key state.");
 			}
 
 			if(cooldown > 0)

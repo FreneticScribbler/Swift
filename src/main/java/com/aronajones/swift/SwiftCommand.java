@@ -1,25 +1,28 @@
 package com.aronajones.swift;
 
-import com.aronajones.swift.profiles.Profile;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.util.ChatComponentTranslation;
 
+import com.aronajones.swift.Swift;
+
 import java.util.List;
-import java.util.Map;
 
 public class SwiftCommand extends CommandBase {
-	public static final String NAME = "swift";
+	private static final String NAME = "swift";
 
-	public static final String DISABLE = "disable";
-	public static final String ENABLE = "enable";
+	private static final String DISABLE = "disable";
+	private static final String ENABLE = "enable";
 
-	public static final String USAGE = "commands.swift.usage";
-	public static final String DISABLED = "commands.swift.disabled";
-	public static final String ENABLED = "commands.swift.enabled";
+	private static final String USAGE = "commands.swift.usage";
+	private static final String DISABLED = "commands.swift.disabled";
+	private static final String ENABLED = "commands.swift.enabled";
 
-	private Map<String, Profile> profiles;
+	public SwiftCommand() {
+		//this.gson = new GsonBuilder().setPrettyPrinting().create();
+		//this.profiles = readFile(Swift.profileConfig);
+	}
 
 	@Override
 	public String getCommandName() {
@@ -50,10 +53,12 @@ public class SwiftCommand extends CommandBase {
 			if(args[0].equalsIgnoreCase(DISABLE)) {
 				Swift.isEnabled = false;
 				commandSender.addChatMessage(new ChatComponentTranslation(DISABLED));
+				return;
 			}
 			else if(args[0].equalsIgnoreCase(ENABLE)) {
 				Swift.isEnabled = true;
 				commandSender.addChatMessage(new ChatComponentTranslation(ENABLED));
+				return;
 			}
 			else {
 				throw new WrongUsageException(getCommandUsage(commandSender));
